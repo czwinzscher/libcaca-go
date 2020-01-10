@@ -33,6 +33,14 @@ func (cv Canvas) SetSize(width int, height int) error {
 	return err
 }
 
+func (cv Canvas) GetWidth() int {
+	return int(C.caca_get_canvas_width(cv.Cv))
+}
+
+func (cv Canvas) GetHeight() int {
+	return int(C.caca_get_canvas_height(cv.Cv))
+}
+
 func (c Canvas) PutStr(x int, y int, str string) {
 	C.caca_put_str(c.Cv, C.int(x), C.int(y), C.CString(str))
 }
