@@ -23,6 +23,16 @@ func CreateCanvas(width int, height int) (Canvas, error) {
 	return Canvas{Cv: cPtr}, nil
 }
 
+func (cv Canvas) SetSize(width int, height int) error {
+	ret, err := C.caca_set_canvas_size(cv.Cv, C.int(width), C.int(height))
+
+	if int(ret) != -1 {
+		return nil
+	}
+
+	return err
+}
+
 func (c Canvas) PutStr(x int, y int, str string) {
 	C.caca_put_str(c.Cv, C.int(x), C.int(y), C.CString(str))
 }
