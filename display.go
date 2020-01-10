@@ -6,7 +6,6 @@ package caca
 import "C"
 
 import (
-	"errors"
 	"unsafe"
 )
 
@@ -20,15 +19,16 @@ type Event struct {
 
 func CreateDisplay(cv *Canvas) (Display, error) {
 	var cPtr *C.struct_caca_display
+	var err error
+
 	if cv != nil {
-		cPtr = C.caca_create_display(cv.Cv)
+		cPtr, err = C.caca_create_display(cv.Cv)
 	} else {
-		cPtr = C.caca_create_display(nil)
+		cPtr, err = C.caca_create_display(nil)
 	}
 
 	if cPtr == nil {
-		// TODO check errno
-		return Display{}, errors.New("could not create display")
+		return Display{}, err
 	}
 
 	return Display{Dp: cPtr}, nil
@@ -40,8 +40,14 @@ func (d Display) GetCanvas() Canvas {
 	return Canvas{Cv: cPtr}
 }
 
-func (d Display) SetTitle(title string) {
-	C.caca_set_display_title(d.Dp, C.CString(title))
+func (d Display) SetTitle(title string) error {
+	ret, err := C.caca_set_display_title(d.Dp, C.CString(title))
+
+	if int(ret) != -1 {
+		return nil
+	}
+
+	return err
 }
 
 func (d Display) Refresh() {
