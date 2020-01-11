@@ -461,16 +461,6 @@ func (cv Canvas) FlushFiglet() int {
 	return int(C.caca_flush_figlet(cv.Cv))
 }
 
-// func (cv Canvas) Render(font Font, buf []byte, width int, height int, pitch int) error {
-// 	ret, err := C.caca_render_canvas(cv.Cv, C.CString(font), unsafe.Pointer(&buf[0]), C.int(width), C.int(height), C.int(pitch))
-
-// 	if int(ret) == -1 {
-// 		return err
-// 	}
-
-// 	return nil
-// }
-
 func (cv Canvas) Free() {
 	C.free(unsafe.Pointer(cv.Cv))
 }

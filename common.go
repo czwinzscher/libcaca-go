@@ -105,3 +105,56 @@ func GetVersion() string {
 
 	return string(b)
 }
+
+func Rand(min int, max int) int {
+	return int(C.caca_rand(C.int(min), C.int(max)))
+}
+
+func AttrToAnsi(attr uint32) uint8 {
+	return uint8(C.caca_attr_to_ansi(C.uint32_t(attr)))
+}
+
+func AttrToAnsiFg(attr uint32) uint8 {
+	return uint8(C.caca_attr_to_ansi_fg(C.uint32_t(attr)))
+}
+
+func AttrToAnsiBg(attr uint32) uint8 {
+	return uint8(C.caca_attr_to_ansi_bg(C.uint32_t(attr)))
+}
+
+func AttrToRGB12Fg(attr uint32) uint16 {
+	return uint16(C.caca_attr_to_rgb12_fg(C.uint32_t(attr)))
+}
+
+func AttrToRGB12Bg(attr uint32) uint16 {
+	return uint16(C.caca_attr_to_rgb12_bg(C.uint32_t(attr)))
+}
+
+func UTF8ToUTF32(s string) uint32 {
+	return uint32(C.caca_utf8_to_utf32(C.CString(s), nil))
+}
+
+func UTF32ToUTF8(ch uint32) string {
+	cBuf := [7]C.char{}
+	C.caca_utf32_to_utf8(&cBuf[0], C.uint32_t(ch))
+
+	goBuf := (*[7]byte)(unsafe.Pointer(&cBuf[0]))[:7:7]
+
+	return string(goBuf)
+}
+
+func UTF32ToCP437(ch uint32) uint8 {
+	return uint8(C.caca_utf32_to_cp437(C.uint32_t(ch)))
+}
+
+func CP437ToUTF32(ch uint8) uint32 {
+	return uint32(C.caca_cp437_to_utf32(C.uint8_t(ch)))
+}
+
+func UTF32ToAscii(ch uint32) rune {
+	return rune(C.caca_utf32_to_ascii(C.uint32_t(ch)))
+}
+
+func UTF32IsFullwidth(ch uint32) int {
+	return int(C.caca_utf32_is_fullwidth(C.uint32_t(ch)))
+}
