@@ -1,5 +1,5 @@
 # libcaca-go
-Go bindings for [https://github.com/cacalabs/libcaca](libcaca).
+Go bindings for [libcaca](https://github.com/cacalabs/libcaca).
 
 ## Example
 ```go
