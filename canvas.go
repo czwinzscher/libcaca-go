@@ -387,8 +387,9 @@ func (cv Canvas) FreeFrame(id int) error {
 	return nil
 }
 
-func (cv Canvas) ImportFromMemory(data []byte, length uint, format string) error {
-	ret, err := C.caca_import_canvas_from_memory(cv.Cv, unsafe.Pointer(&data[0]), C.size_t(length), C.CString(format))
+func (cv Canvas) ImportFromMemory(data []byte, format string) error {
+	l := C.size_t(len(data))
+	ret, err := C.caca_import_canvas_from_memory(cv.Cv, unsafe.Pointer(&data[0]), l, C.CString(format))
 
 	if int(ret) == -1 {
 		return err
@@ -407,8 +408,9 @@ func (cv Canvas) ImportFromFile(filename string, format string) error {
 	return nil
 }
 
-func (cv Canvas) ImportAreaFromMemory(x int, y int, data []byte, length uint, format string) error {
-	ret, err := C.caca_import_area_from_memory(cv.Cv, C.int(x), C.int(y), unsafe.Pointer(&data[0]), C.size_t(length), C.CString(format))
+func (cv Canvas) ImportAreaFromMemory(x int, y int, data []byte, format string) error {
+	l := C.size_t(len(data))
+	ret, err := C.caca_import_area_from_memory(cv.Cv, C.int(x), C.int(y), unsafe.Pointer(&data[0]), l, C.CString(format))
 
 	if int(ret) == -1 {
 		return err
