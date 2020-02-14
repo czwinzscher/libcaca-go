@@ -10,15 +10,16 @@ import (
 )
 
 const (
-	COLOR_BLACK        = 0x00
-	COLOR_BLUE         = 0x01
-	COLOR_GREEN        = 0x02
-	COLOR_CYAN         = 0x03
-	COLOR_RED          = 0x04
-	COLOR_MAGENTA      = 0x05
-	COLOR_BROWN        = 0x06
-	COLOR_LIGHTGRAY    = 0x07
-	COLOR_DARKGRAY     = 0x08
+	COLOR_BLACK     = 0x00
+	COLOR_BLUE      = 0x01
+	COLOR_GREEN     = 0x02
+	COLOR_CYAN      = 0x03
+	COLOR_RED       = 0x04
+	COLOR_MAGENTA   = 0x05
+	COLOR_BROWN     = 0x06
+	COLOR_LIGHTGRAY = 0x07
+	COLOR_DARKGRAY  = 0x08
+
 	COLOR_LIGHTBLUE    = 0x09
 	COLOR_LIGHTGREEN   = 0x0a
 	COLOR_LIGHTCYAN    = 0x0b
