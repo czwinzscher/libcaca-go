@@ -160,7 +160,7 @@ func (cv Canvas) GetHandleY() int {
 // mask canvas can be used.
 //
 // If an error occurs the according errno is returned.
-func (cv *Canvas) Blit(x int, y int, src Canvas, mask *Canvas) error {
+func (cv Canvas) Blit(x int, y int, src Canvas, mask *Canvas) error {
 	var ret C.int
 	var err error
 
