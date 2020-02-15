@@ -98,8 +98,11 @@ const (
 	KEY_F13       = 0x126
 	KEY_F14       = 0x127
 	KEY_F15       = 0x128
+
+	MAGIC_FULLWIDTH = 0x000ffffe
 )
 
+// GetVersion returns a string with the libcaca version information.
 func GetVersion() string {
 	cStr := C.caca_get_version()
 	b := C.GoBytes(unsafe.Pointer(cStr), C.int(C.strlen(cStr)))
@@ -107,34 +110,99 @@ func GetVersion() string {
 	return string(b)
 }
 
+// Rand returns a random number between min and max.
 func Rand(min int, max int) int {
 	return int(C.caca_rand(C.int(min), C.int(max)))
 }
 
+// AttrToAnsi gets the ANSI colour pair for a given attribute. The returned value
+// is an 8-bit value whose higher 4 bits are the background colour and lower 4
+// bits are the foreground colour.
+//
+// If the attribute has ARGB colours, the nearest colour is used. Special
+// attributes such as CACA_DEFAULT and CACA_TRANSPARENT are not handled and are
+// both replaced with CACA_LIGHTGRAY for the foreground colour and CACA_BLACK
+// for the background colour.
+//
+// This function never fails. If the attribute value is outside the expected
+// 32-bit range, higher order bits are simply ignored.
 func AttrToAnsi(attr uint32) uint8 {
 	return uint8(C.caca_attr_to_ansi(C.uint32_t(attr)))
 }
 
+// AttrToAnsiFg gets the ANSI foreground colour value for a given attribute. The
+// returned value is either one of the CACA_RED, CACA_BLACK etc. predefined
+// colours, or the special value CACA_DEFAULT meaning the media's default
+// foreground value, or the special value CACA_TRANSPARENT.
+//
+// If the attribute has ARGB colours, the nearest colour is returned.
+//
+// This function never fails. If the attribute value is outside the expected
+// 32-bit range, higher order bits are simply ignored.
 func AttrToAnsiFg(attr uint32) uint8 {
 	return uint8(C.caca_attr_to_ansi_fg(C.uint32_t(attr)))
 }
 
+// AttrToAnsiBg gets ANSI background information from attribute.
+//
+// Get the ANSI background colour value for a given attribute. The returned value
+// is either one of the CACA_RED, CACA_BLACK etc. predefined colours, or the
+// special value CACA_DEFAULT meaning the media's default background value, or
+// the special value CACA_TRANSPARENT.
+//
+// If the attribute has ARGB colours, the nearest colour is returned.
+//
+// This function never fails. If the attribute value is outside the expected
+// 32-bit range, higher order bits are simply ignored.
 func AttrToAnsiBg(attr uint32) uint8 {
 	return uint8(C.caca_attr_to_ansi_bg(C.uint32_t(attr)))
 }
 
+// AttrToRGB12Fg gets the 12-bit foreground colour value for a given attribute.
+// The returned value is a native-endian encoded integer with each red, green
+// and blue values encoded on 8 bits in the following order:
+//
+//     8-11 most significant bits: red
+//     4-7 most significant bits: green
+//     least significant bits: blue
+//
+// This function never fails. If the attribute value is outside the expected
+// 32-bit range, higher order bits are simply ignored.
 func AttrToRGB12Fg(attr uint32) uint16 {
 	return uint16(C.caca_attr_to_rgb12_fg(C.uint32_t(attr)))
 }
 
+// AttrToRGB12Bg gets the 12-bit background colour value for a given attribute.
+// The returned value is a native-endian encoded integer with each red, green
+// and blue values encoded on 8 bits in the following order:
+//
+//     8-11 most significant bits: red
+//     4-7 most significant bits: green
+//     least significant bits: blue
+//
+// This function never fails. If the attribute value is outside the expected
+// 32-bit range, higher order bits are simply ignored.
 func AttrToRGB12Bg(attr uint32) uint16 {
 	return uint16(C.caca_attr_to_rgb12_bg(C.uint32_t(attr)))
 }
 
+// UTF8ToUTF32 converts a UTF-8 character read from a string and returns its
+// value in the UTF-32 character set.
+//
+// If a null byte was reached before the expected end of the UTF-8 sequence,
+// this function returns zero.
+//
+// This function never fails, but its behaviour with illegal UTF-8 sequences is
+// undefined.
 func UTF8ToUTF32(s string) uint32 {
 	return uint32(C.caca_utf8_to_utf32(C.CString(s), nil))
 }
 
+// UTF32ToUTF8 Convert a UTF-32 character read from a string and returns its value
+// in the UTF-8 character set.
+//
+// This function never fails, but its behaviour with illegal UTF-32 characters
+// is undefined.
 func UTF32ToUTF8(ch uint32) string {
 	cBuf := [7]C.char{}
 	C.caca_utf32_to_utf8(&cBuf[0], C.uint32_t(ch))
@@ -144,18 +212,33 @@ func UTF32ToUTF8(ch uint32) string {
 	return string(goBuf)
 }
 
+// UTF32ToCP437 converts a UTF-32 character and returns its value in the CP437
+// character set, or "?" if the character has no equivalent.
 func UTF32ToCP437(ch uint32) uint8 {
 	return uint8(C.caca_utf32_to_cp437(C.uint32_t(ch)))
 }
 
+// CP437ToUTF32 converts a CP437 character and returns its value in the UTF-32
+// character set, or zero if the character is a CP437 control character.
 func CP437ToUTF32(ch uint8) uint32 {
 	return uint32(C.caca_cp437_to_utf32(C.uint8_t(ch)))
 }
 
+// UTF32ToAscii converts a UTF-32 character into an ASCII character. When no
+// equivalent exists, a graphically close equivalent is sought.
+//
+// This function never fails, but its behaviour with illegal UTF-32 characters
+// is undefined.
 func UTF32ToAscii(ch uint32) rune {
 	return rune(C.caca_utf32_to_ascii(C.uint32_t(ch)))
 }
 
-func UTF32IsFullwidth(ch uint32) int {
-	return int(C.caca_utf32_is_fullwidth(C.uint32_t(ch)))
+// UTF32IsFullwidth checks whether the given UTF-32 character should be printed
+// at twice the normal width (fullwidth characters). If the character is unknown
+// or if its status cannot be decided, it is treated as a standard-width
+// character.
+func UTF32IsFullwidth(ch uint32) bool {
+	ret := int(C.caca_utf32_is_fullwidth(C.uint32_t(ch)))
+
+	return int(ret) == 1
 }
