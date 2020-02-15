@@ -500,14 +500,14 @@ func (cv Canvas) SetColorAnsi(fg byte, bg byte) error {
 	return err
 }
 
-// SetColorArgb sets the default ARGB colour pair for text drawing. String
-// functions such as Printf() and graphical primitive functions such as DrawLine()
-// will use these attributes.
+// SetColorARGB sets the default ARGB colour pair for text drawing. String
+// functions such as Printf() and graphical primitive functions such as
+// DrawLine() will use these attributes.
 //
 // Colors are 16-bit ARGB values, each component being coded on 4 bits. For
 // instance, 0xf088 is solid dark cyan (A=15 R=0 G=8 B=8), and 0x8fff is white
 // with 50% alpha (A=8 R=15 G=15 B=15).
-func (cv Canvas) SetColorArgb(fg int16, bg int16) {
+func (cv Canvas) SetColorARGB(fg int16, bg int16) {
 	C.caca_set_color_argb(cv.Cv, C.uint16_t(fg), C.uint16_t(bg))
 }
 
