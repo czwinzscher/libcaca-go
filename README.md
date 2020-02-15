@@ -1,6 +1,8 @@
 # libcaca-go
 Go bindings for [libcaca](https://github.com/cacalabs/libcaca).
 
+Documentation is available at [https://godoc.org/github.com/czwinzscher/libcaca-go](https://godoc.org/github.com/czwinzscher/libcaca-go).
+
 ## Example
 ```go
 package main
@@ -26,10 +28,10 @@ func main() {
 		log.Fatal("error while creating display: " + err.Error())
 	}
 
-	defer dp.Free()
-
 	dp.SetTitle("teitel")
 	dp.Refresh()
 	dp.GetEvent(caca.EVENT_KEY_PRESS, nil, -1)
+
+	dp.Free()
 }
 ```
