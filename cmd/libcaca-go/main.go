@@ -21,9 +21,9 @@ func main() {
 		log.Fatal("error while creating display: " + err.Error())
 	}
 
-	defer dp.Free()
-
 	dp.SetTitle("teitel")
 	dp.Refresh()
 	dp.GetEvent(caca.EVENT_KEY_PRESS, nil, -1)
+
+	dp.Free()
 }
