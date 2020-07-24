@@ -21,14 +21,14 @@ func main() {
 	defer cv.Free()
 
 	cv.SetColorAnsi(caca.COLOR_GREEN, caca.COLOR_BLACK) // hacker style
-	cv.PutStr(0, 0, "hallohl")
+	cv.PutStr(0, 0, "hello")
 
 	dp, err := caca.CreateDisplay(&cv)
 	if err != nil {
 		log.Fatal("error while creating display: " + err.Error())
 	}
 
-	dp.SetTitle("teitel")
+	dp.SetTitle("title")
 	dp.Refresh()
 	dp.GetEvent(caca.EVENT_KEY_PRESS, nil, -1)
 
