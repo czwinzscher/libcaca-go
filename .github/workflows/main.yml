@@ -15,7 +15,9 @@ jobs:
           go-version: ${{ matrix.go }}
 
       - name: install dependencies
-        run: apt-get -y update && apt-get -y install libcaca-dev gcc
+        run: |
+          sudo apt-get -y update
+          sudo apt-get -y install libcaca-dev gcc
 
       - name: checkout code
         uses: actions/checkout@v2
