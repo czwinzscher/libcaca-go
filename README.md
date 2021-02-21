@@ -1,4 +1,6 @@
 # libcaca-go
+[![Github CI](https://github.com/czwinzscher/libcaca-go/actions/workflows/main.yml/badge.svg)](https://github.com/czwinzscher/libcaca-go/actions/workflows/main.yml)
+
 Go bindings for [libcaca](https://github.com/cacalabs/libcaca).
 
 Documentation is available at [https://godoc.org/github.com/czwinzscher/libcaca-go](https://godoc.org/github.com/czwinzscher/libcaca-go).
