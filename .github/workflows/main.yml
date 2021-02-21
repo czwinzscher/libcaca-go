@@ -1,0 +1,24 @@
+name: libcaca-go-ci
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go: [ '1.15', '1.16' ]
+    name: build with ${{ matrix.go }}
+    steps:
+      - name: setup go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go }}
+
+      - name: install dependencies
+        run: apt-get -y update && apt-get -y install libcaca-dev gcc
+
+      - name: checkout code
+        uses: actions/checkout@v2
+
+      - name: build
+        run: go build
