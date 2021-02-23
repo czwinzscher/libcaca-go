@@ -2,7 +2,7 @@ name: libcaca-go-ci
 on: [push, pull_request]
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: install dependencies
