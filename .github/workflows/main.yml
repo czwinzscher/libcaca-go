@@ -4,23 +4,15 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        go: [ '1.15', '1.16' ]
-    name: build with ${{ matrix.go }}
     steps:
-      - name: setup go
-        uses: actions/setup-go@v2
-        with:
-          go-version: ${{ matrix.go }}
-
       - name: install dependencies
         run: |
           sudo apt-get -y update
           sudo apt-get -y install libcaca-dev gcc
 
-      - name: checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-      - name: build
-        run: go build -v ./...
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v2
+        with:
+          version: latest

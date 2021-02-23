@@ -1,0 +1,9 @@
+linters:
+  # TODO don't use enable-all
+  enable-all: true
+  disable:
+    - gci
+    - goerr113
+    - gofumpt
+    - goimports
+    - nlreturn

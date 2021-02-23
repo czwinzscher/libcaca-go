@@ -162,6 +162,7 @@ func (cv Canvas) GetHandleY() int {
 // If an error occurs the according errno is returned.
 func (cv Canvas) Blit(x int, y int, src Canvas, mask *Canvas) error {
 	var ret C.int
+
 	var err error
 
 	if mask == nil {
@@ -521,7 +522,9 @@ func (cv Canvas) DrawLine(x1 int, y1 int, x2 int, y2 int, ch rune) {
 // to draw a polygon you need to specify the starting point at the end of the list
 // as well.
 func (cv Canvas) DrawPolyline(xy []IntPair, ch rune) {
-	var cx, cy []C.int
+	l := len(xy)
+	cx := make([]C.int, 0, l)
+	cy := make([]C.int, 0, l)
 
 	for _, e := range xy {
 		cx = append(cx, C.int(e.First))
@@ -541,7 +544,9 @@ func (cv Canvas) DrawThinLine(x1 int, y1 int, x2 int, y2 int) {
 // order to draw a polygon you need to specify the starting point at the end of
 // the list as well.
 func (cv Canvas) DrawThinPolyline(xy []IntPair) {
-	var cx, cy []C.int
+	l := len(xy)
+	cx := make([]C.int, 0, l)
+	cy := make([]C.int, 0, l)
 
 	for _, e := range xy {
 		cx = append(cx, C.int(e.First))
@@ -825,6 +830,7 @@ func (cv Canvas) ImportAreaFromFile(x int, y int, filename string, format string
 // If an error occurs an empty byte slice and the according errno is returned.
 func (cv Canvas) ExportToMemory(format string) ([]byte, error) {
 	var b C.size_t
+
 	ret, err := C.caca_export_canvas_to_memory(cv.Cv, C.CString(format), &b)
 
 	if ret == nil {
@@ -840,6 +846,7 @@ func (cv Canvas) ExportToMemory(format string) ([]byte, error) {
 // If an error occurs an empty byte slice and the according errno is returned.
 func (cv Canvas) ExportAreaToMemory(x int, y int, w int, h int, format string) ([]byte, error) {
 	var b C.size_t
+
 	ret, err := C.caca_export_area_to_memory(cv.Cv, C.int(x), C.int(y), C.int(w), C.int(h), C.CString(format), &b)
 
 	if ret == nil {

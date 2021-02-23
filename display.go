@@ -24,6 +24,7 @@ type Display struct {
 // If an error occurs the according errno is returned.
 func CreateDisplay(cv *Canvas) (Display, error) {
 	var cPtr *C.struct_caca_display
+
 	var err error
 
 	if cv != nil {
@@ -56,6 +57,7 @@ func CreateDisplay(cv *Canvas) (Display, error) {
 // If an error occurs the according errno is returned.
 func CreateDisplayWithDriver(cv *Canvas, driver string) (Display, error) {
 	var cPtr *C.struct_caca_display
+
 	var err error
 
 	if cv != nil {
